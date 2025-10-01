@@ -4,19 +4,25 @@ let ratings = [];
 let numUsers = 0;
 let numMovies = 0;
 
-// MovieLens dataset URLs
-const MOVIES_URL = 'https://raw.githubusercontent.com/tensorflow/tfjs-examples/master/multivariate-linear-regression/data/u.item';
-const RATINGS_URL = 'https://raw.githubusercontent.com/tensorflow/tfjs-examples/master/multivariate-linear-regression/data/u.data';
+// MovieLens dataset URLs with CORS proxy
+const MOVIES_URL = 'https://corsproxy.io/?https://raw.githubusercontent.com/tensorflow/tfjs-examples/master/multivariate-linear-regression/data/u.item';
+const RATINGS_URL = 'https://corsproxy.io/?https://raw.githubusercontent.com/tensorflow/tfjs-examples/master/multivariate-linear-regression/data/u.data';
 
 async function loadData() {
     try {
         console.log('Loading movie data...');
         const moviesResponse = await fetch(MOVIES_URL);
+        if (!moviesResponse.ok) {
+            throw new Error(`Failed to load movies: ${moviesResponse.status}`);
+        }
         const moviesText = await moviesResponse.text();
         movies = parseItemData(moviesText);
         
         console.log('Loading rating data...');
         const ratingsResponse = await fetch(RATINGS_URL);
+        if (!ratingsResponse.ok) {
+            throw new Error(`Failed to load ratings: ${ratingsResponse.status}`);
+        }
         const ratingsText = await ratingsResponse.text();
         ratings = parseRatingData(ratingsText);
         
@@ -55,7 +61,7 @@ function parseItemData(text) {
     numMovies = movieMap.size;
     console.log(`Parsed ${numMovies} movies`);
     
-    // CHANGED: Convert Map to array and sort by title alphabetically
+    // Convert Map to array and sort by title alphabetically
     return Array.from(movieMap.values()).sort((a, b) => {
         // Remove any leading/trailing whitespace and compare case-insensitively
         const titleA = a.title.trim().toLowerCase();
@@ -69,7 +75,7 @@ function parseRatingData(text) {
     const ratingData = [];
     const userSet = new Set();
     
-    lines.forEach(line) => {
+    lines.forEach(line => {
         const parts = line.split('\t');
         if (parts.length >= 3) {
             const userId = parseInt(parts[0]);
