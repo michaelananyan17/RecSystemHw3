@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Factorization Movie Recommender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Recommender System</h1>
+        <p class="subtitle">Using Matrix Factorization with TensorFlow.js</p>
+        
+        <div class="control-group">
+            <label for="user-select">Select User:</label>
+            <select id="user-select">
+                <option value="">Loading users...</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="movie-select">Select Movie:</label>
+            <select id="movie-select">
+                <option value="">Loading movies...</option>
+            </select>
+        </div>
+        
+        <button id="predict-btn" onclick="predictRating()" disabled>Predict Rating</button>
+        
+        <div id="result" class="result-area">
+            <p>Loading data and training model...</p>
+        </div>
+    </div>
+
+    <!-- Load TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
